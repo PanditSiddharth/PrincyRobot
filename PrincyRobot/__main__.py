@@ -58,8 +58,7 @@ You can find my list of available commands with /help.
 
 HELP_STRINGS = """
 Hey there! My name is *{}*.
-I'm a Hero For Fun and help admins manage their groups with One Punch! Have a look at the following for an idea of some of \
-the things I can help you with.
+I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of the things I can help you with.
 
 *Main* commands available:
  • /help: PM's you this message.
@@ -209,11 +208,6 @@ def start(update: Update, context: CallbackContext):
                          InlineKeyboardButton(
                              text="🔔 Updates Channel",
                              url="https://t.me/PrincyUpdates")
-                     ],
-                     [
-                         InlineKeyboardButton(
-                             text="🧾 Getting started guide",
-                             url="https://t.me/princyrobotinfo")
                      ]
                     ]))
     else:
