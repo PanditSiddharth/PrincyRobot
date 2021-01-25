@@ -10,7 +10,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters, run_async
 from telegram.utils.helpers import mention_html
 
 import PrincyRobot.modules.sql.global_bans_sql as sql
-from PrincyRobot import dispatcher, OWNER_ID, DRAGONS, DEV_USERS, TIGERS, WOLVES, DEMONS, SUPPORT_USERS, WHITELIST_USERS, STRICT_GBAN, EVENT_LOGS
+from PrincyRobot import dispatcher, OWNER_ID, DRAGONS, DEV_USERS, TIGERS, WOLVES, DEMONS, SUPPORT_CHAT, WHITELIST_USERS, STRICT_GBAN, EVENT_LOGS
 from PrincyRobot.modules.helper_funcs.chat_status import user_admin, is_user_admin, support_plus
 from PrincyRobot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from PrincyRobot.modules.helper_funcs.misc import send_to_list
@@ -64,11 +64,11 @@ def gban(bot: Bot, update: Update, args: List[str]):
         message.reply_text("There is no way I can gban this user.")
         return
 
-    if int(user_id) in SUDO_USERS:
+    if int(user_id) in DRAGONS:
         message.reply_text("I spy, with my little eye... a disaster! Why are you guys turning on each other?")
         return
 
-    if int(user_id) in SUPPORT_USERS:
+    if int(user_id) in SUPPORT_CHAT:
         message.reply_text("OOOH someone's trying to gban a Demon Disaster! *grabs popcorn*")
         return
 
@@ -143,7 +143,7 @@ def gban(bot: Bot, update: Update, args: List[str]):
                                    log_message + "\n\nFormatting has been disabled due to an unexpected error.")
 
     else:
-        send_to_list(bot, SUDO_USERS + SUPPORT_USERS, log_message, html=True)
+        send_to_list(bot, DRAGONS + SUPPORT_CHAT, log_message, html=True)
 
     sql.gban_user(user_id, user_chat.username or user_chat.first_name, reason)
 
@@ -170,7 +170,7 @@ def gban(bot: Bot, update: Update, args: List[str]):
                     bot.send_message(EVENT_LOGS, f"Could not gban due to {excp.message}",
                                      parse_mode=ParseMode.HTML)
                 else:
-                    send_to_list(bot, SUDO_USERS + SUPPORT_USERS, f"Could not gban due to: {excp.message}")
+                    send_to_list(bot, DRAGONS + SUPPORT_CHAT, f"Could not gban due to: {excp.message}")
                 sql.ungban_user(user_id)
                 return
         except TelegramError:
@@ -179,7 +179,7 @@ def gban(bot: Bot, update: Update, args: List[str]):
     if EVENT_LOGS:
         log.edit_text(log_message + f"\n<b>Chats affected:</b> {gbanned_chats}", parse_mode=ParseMode.HTML)
     else:
-        send_to_list(bot, SUDO_USERS + SUPPORT_USERS, f"Gban complete! (User banned in {gbanned_chats} chats)")
+        send_to_list(bot, DRAGONS + SUPPORT_CHAT, f"Gban complete! (User banned in {gbanned_chats} chats)")
 
     end_time = time.time()
     gban_time = round((end_time - start_time), 2)
@@ -247,7 +247,7 @@ def ungban(bot: Bot, update: Update, args: List[str]):
             log = bot.send_message(EVENT_LOGS,
                                    log_message + "\n\nFormatting has been disabled due to an unexpected error.")
     else:
-        send_to_list(bot, SUDO_USERS + SUPPORT_USERS, log_message, html=True)
+        send_to_list(bot, DRAGONS + SUPPORT_CHAT, log_message, html=True)
 
     chats = get_all_chats()
     ungbanned_chats = 0
@@ -284,7 +284,7 @@ def ungban(bot: Bot, update: Update, args: List[str]):
     if EVENT_LOGS:
         log.edit_text(log_message + f"\n<b>Chats affected:</b> {ungbanned_chats}", parse_mode=ParseMode.HTML)
     else:
-        send_to_list(bot, SUDO_USERS + SUPPORT_USERS, "un-gban complete!")
+        send_to_list(bot, DRAGONS + SUPPORT_CHAT, "un-gban complete!")
 
     end_time = time.time()
     ungban_time = round((end_time - start_time), 2)
