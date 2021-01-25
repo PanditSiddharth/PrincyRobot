@@ -10,7 +10,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters, run_async
 from telegram.utils.helpers import mention_html
 
 import PrincyRobot.modules.sql.global_bans_sql as sql
-from PrincyRobot import dispatcher, OWNER_ID, DRAGONS, DEV_USERS, TIGERS, WOLVES, DEMONS, SUPPORT_CHAT, WHITELIST_USERS, STRICT_GBAN, EVENT_LOGS
+from PrincyRobot import dispatcher, OWNER_ID, DRAGONS, DEV_USERS, TIGERS, WOLVES, DEMONS, SUPPORT_CHAT, STRICT_GBAN, EVENT_LOGS
 from PrincyRobot.modules.helper_funcs.chat_status import user_admin, is_user_admin, support_plus
 from PrincyRobot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from PrincyRobot.modules.helper_funcs.misc import send_to_list
@@ -72,7 +72,7 @@ def gban(bot: Bot, update: Update, args: List[str]):
         message.reply_text("OOOH someone's trying to gban a Demon Disaster! *grabs popcorn*")
         return
 
-    if int(user_id) in WHITELIST_USERS:
+    if int(user_id) in WOLVES:
         message.reply_text("Wolves cannot be gbanned!")
         return
 
